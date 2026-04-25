@@ -19,9 +19,15 @@ function AddItem() {
   });
 
   const locations = [
-    'Select Location', 'Main Cafeteria, Block A', 'Examination Hall, Block C',
-    'Central Library', 'Parking Lot, Near Gate 2', 'Computer Science Department',
-    'Agriculture Faculty', 'Student Hostel', 'Sports Complex'
+    'Select Location',
+    'Main Cafeteria, Block A',
+    'Examination Hall, Block C',
+    'Central Library',
+    'Parking Lot, Near Gate 2',
+    'Computer Science Department',
+    'Agriculture Faculty',
+    'Student Hostel',
+    'Sports Complex'
   ];
 
   const compressImage = (file) => {

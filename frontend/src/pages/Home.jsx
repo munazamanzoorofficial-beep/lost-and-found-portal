@@ -33,7 +33,7 @@ function Home() {
   };
 
   const handleImageError = (e) => {
-    e.target.src = '/images/default.png';
+    e.target.src = 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=300';
   };
 
   if (loading) {
@@ -47,7 +47,6 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Hero Section */}
       <div className="hero">
         <div className="hero-content">
           <h1>🔍 Lost Something?</h1>
@@ -60,7 +59,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Statistics Cards */}
       <div className="stats-container">
         <div className="stat-card">
           <div className="stat-icon">📋</div>
@@ -79,7 +77,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Recent Items Section */}
       <div className="recent-section">
         <div className="section-header">
           <h2>Recently Reported Items</h2>
@@ -88,17 +85,9 @@ function Home() {
 
         <div className="recent-grid">
           {recentItems.map((item) => (
-            <div 
-              key={item.id} 
-              className="recent-card"
-              onClick={() => handleCardClick(item.id)}
-            >
+            <div key={item.id} className="recent-card" onClick={() => handleCardClick(item.id)}>
               <div className="recent-image">
-                <img 
-                  src={item.imageUrl} 
-                  alt={item.title}
-                  onError={handleImageError}
-                />
+                <img src={item.imageUrl} alt={item.title} onError={handleImageError} />
                 <span className={`recent-badge ${item.status}`}>
                   {item.status === 'lost' ? 'LOST' : 'FOUND'}
                 </span>
@@ -106,9 +95,7 @@ function Home() {
               <div className="recent-info">
                 <h3>{item.title}</h3>
                 <p className="recent-description">
-                  {item.description.length > 80 
-                    ? item.description.substring(0, 80) + '...' 
-                    : item.description}
+                  {item.description.length > 80 ? item.description.substring(0, 80) + '...' : item.description}
                 </p>
                 <div className="recent-location">📍 {item.location}</div>
                 <div className="recent-date">📅 {new Date(item.date).toLocaleDateString()}</div>
@@ -125,7 +112,6 @@ function Home() {
         )}
       </div>
 
-      {/* Call to Action Section */}
       <div className="cta-section">
         <div className="cta-content">
           <h2>Lost or Found Something?</h2>

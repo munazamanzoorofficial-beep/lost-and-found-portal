@@ -1,69 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { getItemsByStatus, deleteItem } from '../services/api';
 import ItemCard from '../components/ItemCard';
-import './Pages.css';
 
 function Found() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchItems();
+    loadItems();
   }, []);
 
-  const fetchItems = async () => {
+  const loadItems = async () => {
     setLoading(true);
-    try {
-      const data = await getItemsByStatus('found');
-      setItems(data);
-    } catch (error) {
-      console.error('Error fetching found items:', error);
-    } finally {
-      setLoading(false);
-    }
+    const data = await getItemsByStatus('found');
+    setItems(data);
+    setLoading(false);
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      try {
-        await deleteItem(id);
-        await fetchItems();
-        alert('✅ Item deleted successfully!');
-      } catch (error) {
-        alert('❌ Error deleting item');
-      }
-    }
+    await deleteItem(id);
+    await loadItems();
   };
 
   if (loading) {
-    return (
-      <div className="page-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading found items...</p>
-        </div>
-      </div>
-    );
+    return <div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>;
   }
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>🔍 Found Items</h1>
-        <p>{items.length} item(s) found and reported on campus</p>
-      </div>
-      
-      <div className="items-grid">
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <h1>Found Items</h1>
+      <p>{items.length} items reported found</p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
         {items.map(item => (
           <ItemCard key={item.id} item={item} onDelete={handleDelete} />
         ))}
-        {items.length === 0 && (
-          <div className="empty-state">
-            <p>🎉 No found items reported yet</p>
-            <a href="/add-item" className="btn-primary">📝 Report a Found Item</a>
-          </div>
-        )}
       </div>
+      {items.length === 0 && <p>No found items found.</p>}
     </div>
   );
 }
