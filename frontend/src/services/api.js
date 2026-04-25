@@ -1,5 +1,5 @@
-// Make sure this port matches your backend port
-const API_URL = 'http://localhost:5001/api/items';
+// API base URL - relative for production, localhost for development
+const API_URL = '/api/items';
 
 console.log('API URL:', API_URL);
 
