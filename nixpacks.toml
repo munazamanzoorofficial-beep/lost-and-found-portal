@@ -8,7 +8,4 @@ cmds = ["cd frontend && npm install"]
 cmds = ["cd frontend && npm run build"]
 
 [start]
-cmd = "cd frontend && npm run preview"
-
-[env]
-PORT = "5173"
+cmd = "cd frontend && npx serve dist -l $PORT"

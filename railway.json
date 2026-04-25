@@ -3,7 +3,6 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd frontend && npm run build && npm start",
     "restartPolicyType": "ON_FAILURE"
   }
 }
