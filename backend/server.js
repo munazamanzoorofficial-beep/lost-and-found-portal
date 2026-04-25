@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the React app build directory
 const buildPath = path.join(__dirname, '../frontend/dist');
+console.log('Serving static files from:', buildPath);
 app.use(express.static(buildPath));
 
 // ============ DATA STORAGE ============
@@ -299,6 +300,7 @@ app.get('*', (req, res) => {
 
 // ============ START SERVER ============
 const PORT = process.env.PORT || 5001;
+console.log('Starting server on port:', PORT);
 app.listen(PORT, () => {
   console.log('\n=================================');
   console.log(`🚀 Server running on http://localhost:${PORT}`);
