@@ -1,0 +1,14 @@
+{
+  "name": "lost-and-found-portal",
+  "version": "1.0.0",
+  "description": "Lost & Found Portal for PMAS-AAUR",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
