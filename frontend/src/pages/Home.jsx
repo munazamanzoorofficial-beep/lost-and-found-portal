@@ -7,6 +7,7 @@ function Home() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchItems();
@@ -14,11 +15,16 @@ function Home() {
 
   const fetchItems = async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await getAllItems();
       setItems(data);
+      if (data.length === 0) {
+        setError('Could not load items from the server. Please refresh the page.');
+      }
     } catch (error) {
       console.error('Error fetching items:', error);
+      setError('Unable to load items. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -47,6 +53,12 @@ function Home() {
 
   return (
     <div className="home">
+      {error && (
+        <div className="error-banner">
+          <p>{error}</p>
+          <button onClick={fetchItems}>Refresh</button>
+        </div>
+      )}
       <div className="hero">
         <div className="hero-content">
           <h1>🔍 Lost Something?</h1>

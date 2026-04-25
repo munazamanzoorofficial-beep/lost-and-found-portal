@@ -5,7 +5,7 @@ console.log('API URL:', API_URL);
 
 export const getAllItems = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, { cache: 'no-store' });
     console.log('Response status:', response.status);
     if (!response.ok) throw new Error('Failed to fetch');
     const data = await response.json();
@@ -19,7 +19,7 @@ export const getAllItems = async () => {
 
 export const getItemsByStatus = async (status) => {
   try {
-    const response = await fetch(`${API_URL}/status/${status}`);
+    const response = await fetch(`${API_URL}/status/${status}`, { cache: 'no-store' });
     if (!response.ok) throw new Error('Failed to fetch');
     const data = await response.json();
     console.log(`${status} items:`, data.length);
