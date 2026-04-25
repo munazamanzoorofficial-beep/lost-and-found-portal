@@ -9,7 +9,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+const buildPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(buildPath));
 
 // ============ DATA STORAGE ============
 let items = [];
@@ -286,28 +287,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Root route
+// Root route - serve React app index
 app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Lost & Found API is running!',
-    version: '1.0.0',
-    endpoints: {
-      allItems: '/api/items',
-      lostItems: '/api/items/status/lost',
-      foundItems: '/api/items/status/found',
-      singleItem: '/api/items/:id',
-      health: '/api/health'
-    }
-  });
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // Catch-all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // ============ START SERVER ============
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log('\n=================================');
   console.log(`🚀 Server running on http://localhost:${PORT}`);
