@@ -3,7 +3,8 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd frontend && npm run preview",
-    "healthcheckPath": "/"
+    "startCommand": "cd frontend && npm install && npm run preview",
+    "healthcheckPath": "/",
+    "restartPolicyType": "ON_FAILURE"
   }
 }
