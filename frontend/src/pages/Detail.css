@@ -1,0 +1,181 @@
+.detail-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.detail-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateX(-3px);
+}
+
+.detail-image-section {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  text-align: center;
+  padding: 30px;
+  position: relative;
+}
+
+.detail-image {
+  max-height: 400px;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.detail-status-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.status {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: bold;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.status.lost {
+  background: #ff4757;
+}
+
+.status.found {
+  background: #00d25b;
+}
+
+.detail-content {
+  padding: 2rem;
+}
+
+.detail-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.detail-description {
+  margin-bottom: 2rem;
+}
+
+.detail-description h3 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.detail-description p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.detail-info {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.info-card {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.call-btn, .report-btn {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.call-btn {
+  background: #00d25b;
+  color: white;
+}
+
+.call-btn:hover {
+  background: #00b34a;
+  transform: scale(1.02);
+}
+
+.report-btn {
+  background: #667eea;
+  color: white;
+}
+
+.report-btn:hover {
+  background: #5a67d8;
+  transform: scale(1.02);
+}
+
+.detail-loading, .detail-error {
+  text-align: center;
+  padding: 4rem;
+}
+
+@media (max-width: 768px) {
+  .detail-image {
+    max-height: 250px;
+  }
+  
+  .detail-content {
+    padding: 1.5rem;
+  }
+  
+  .detail-title {
+    font-size: 1.5rem;
+  }
+  
+  .detail-actions {
+    flex-direction: column;
+  }
+  
+  .back-button {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
