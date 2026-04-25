@@ -290,12 +290,23 @@ app.get('/api/health', (req, res) => {
 
 // Root route - serve React app index
 app.get('/', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
+  const indexPath = path.join(buildPath, 'index.html');
+  console.log(`Serving root route from: ${indexPath}`);
+  res.sendFile(indexPath, (err) => {
+    if (err) console.error('Error serving index.html:', err);
+  });
 });
 
 // Catch-all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
+  const indexPath = path.join(buildPath, 'index.html');
+  console.log(`Catch-all: serving ${req.path} from: ${indexPath}`);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error serving index.html:', err.message);
+      res.status(404).send('Not Found');
+    }
+  });
 });
 
 // ============ START SERVER ============
