@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 
 // Middleware
@@ -10,7 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the React app build directory
 const buildPath = path.join(__dirname, '../frontend/dist');
-console.log('Serving static files from:', buildPath);
+console.log('Build path:', buildPath);
+console.log('Build path exists:', fs.existsSync(buildPath));
 app.use(express.static(buildPath));
 
 // ============ DATA STORAGE ============
@@ -292,21 +294,27 @@ app.get('/api/health', (req, res) => {
 app.get('/', (req, res) => {
   const indexPath = path.join(buildPath, 'index.html');
   console.log(`Serving root route from: ${indexPath}`);
-  res.sendFile(indexPath, (err) => {
-    if (err) console.error('Error serving index.html:', err);
-  });
+  console.log(`File exists: ${fs.existsSync(indexPath)}`);
+  
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error(`index.html not found at ${indexPath}`);
+    res.status(404).json({ error: 'Frontend build not found', path: indexPath });
+  }
 });
 
 // Catch-all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
   const indexPath = path.join(buildPath, 'index.html');
   console.log(`Catch-all: serving ${req.path} from: ${indexPath}`);
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      console.error('Error serving index.html:', err.message);
-      res.status(404).send('Not Found');
-    }
-  });
+  
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error(`index.html not found at ${indexPath}`);
+    res.status(404).json({ error: 'Frontend build not found', path: indexPath });
+  }
 });
 
 // ============ START SERVER ============
