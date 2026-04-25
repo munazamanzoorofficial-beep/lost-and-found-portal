@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["nodejs"]
+
+[phases.install]
+cmds = ["cd backend && npm install"]
+
+[phases.build]
+cmds = ["echo 'Building backend only...'"]
+
+[start]
+cmd = "cd backend && node server.js"
+
+[env]
+PORT = "5000"
+NODE_ENV = "production"
