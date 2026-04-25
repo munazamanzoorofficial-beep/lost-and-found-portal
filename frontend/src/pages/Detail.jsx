@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getItemById } from '../services/api';
+import { getItemByIdAPI } from '../services/api';
 import './Detail.css';
 
 function Detail() {
@@ -15,7 +15,7 @@ function Detail() {
 
   const loadItem = async () => {
     setLoading(true);
-    const data = await getItemById(id);
+    const data = await getItemByIdAPI(id);
     setItem(data);
     setLoading(false);
   };
@@ -41,16 +41,12 @@ function Detail() {
   return (
     <div className="detail-container">
       <div className="detail-card">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
+        <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
 
         <div className="detail-image-section">
           <img src={item.imageUrl} alt={item.title} className="detail-image" />
           <div className="detail-status-badge">
-            <span className={`status ${item.status}`}>
-              {item.status === 'lost' ? '🔴 LOST' : '🟢 FOUND'}
-            </span>
+            <span className={`status ${item.status}`}>{item.status === 'lost' ? '🔴 LOST' : '🟢 FOUND'}</span>
           </div>
         </div>
 
@@ -63,52 +59,15 @@ function Detail() {
           </div>
 
           <div className="detail-info">
-            <div className="info-card">
-              <div>📍</div>
-              <div>
-                <strong>Location</strong>
-                <p>{item.location}</p>
-              </div>
-            </div>
-
-            <div className="info-card">
-              <div>📞</div>
-              <div>
-                <strong>Contact Number</strong>
-                <p>{item.phoneNumber}</p>
-              </div>
-            </div>
-
-            <div className="info-card">
-              <div>📅</div>
-              <div>
-                <strong>Date Reported</strong>
-                <p>{new Date(item.date).toLocaleDateString()}</p>
-              </div>
-            </div>
-
-            <div className="info-card">
-              <div>🆔</div>
-              <div>
-                <strong>Report ID</strong>
-                <p>#{item.id}</p>
-              </div>
-            </div>
+            <div className="info-card">📍 <strong>Location:</strong> {item.location}</div>
+            <div className="info-card">📞 <strong>Contact:</strong> {item.phoneNumber}</div>
+            <div className="info-card">📅 <strong>Date:</strong> {new Date(item.date).toLocaleDateString()}</div>
+            <div className="info-card">🆔 <strong>Report ID:</strong> #{item.id}</div>
           </div>
 
           <div className="detail-actions">
-            <button 
-              className="call-btn"
-              onClick={() => window.location.href = `tel:${item.phoneNumber}`}
-            >
-              📞 Call Now
-            </button>
-            <button 
-              className="report-btn"
-              onClick={() => navigate('/add-item')}
-            >
-              📝 Report Similar Item
-            </button>
+            <button className="call-btn" onClick={() => window.location.href = `tel:${item.phoneNumber}`}>📞 Call Now</button>
+            <button className="report-btn" onClick={() => navigate('/add-item')}>📝 Report Similar</button>
           </div>
         </div>
       </div>

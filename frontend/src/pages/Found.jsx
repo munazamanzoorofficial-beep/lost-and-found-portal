@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getItemsByStatus, deleteItem } from '../services/api';
-import ItemCard from '../components/ItemCard';
+import { useNavigate } from 'react-router-dom';
+import { getItemsByStatusAPI, deleteItemAPI } from '../services/api';
+import './Pages.css';
 
 function Found() {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadItems();
@@ -13,46 +14,93 @@ function Found() {
 
   const loadItems = async () => {
     setLoading(true);
-    setError(null);
-    try {
-      const data = await getItemsByStatus('found');
-      setItems(data);
-      if (data.length === 0) {
-        setError('Unable to load found items. Please refresh the page.');
-      }
-    } catch (error) {
-      console.error('Error loading found items:', error);
-      setError('Unable to load found items. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    const data = await getItemsByStatusAPI('found');
+    setItems(data);
+    setLoading(false);
   };
 
   const handleDelete = async (id) => {
-    await deleteItem(id);
-    await loadItems();
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      await deleteItemAPI(id);
+      await loadItems();
+      alert('✅ Item deleted successfully!');
+    }
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = '/images/default.png';
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>;
+    return (
+      <div className="page-container">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <p>Loading found items...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      {error && (
-        <div style={{ marginBottom: '20px', color: '#b00020' }}>
-          <p>{error}</p>
-          <button onClick={loadItems}>Refresh</button>
-        </div>
-      )}
-      <h1>Found Items</h1>
-      <p>{items.length} items reported found</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+    <div className="page-container">
+      <div className="page-header">
+        <h1>🔍 Found Items</h1>
+        <p>{items.length} item(s) found and reported on campus</p>
+      </div>
+      
+      <div className="items-grid">
         {items.map(item => (
-          <ItemCard key={item.id} item={item} onDelete={handleDelete} />
+          <div key={item.id} className="item-card" onClick={() => navigate(`/item/${item.id}`)}>
+            <div className="card-image">
+              <img 
+                src={item.imageUrl} 
+                alt={item.title} 
+                onError={handleImageError}
+              />
+              <span className="status-badge found">
+                🟢 FOUND
+              </span>
+            </div>
+            <div className="card-content">
+              <h3>{item.title}</h3>
+              <p className="description">
+                {item.description.length > 100 
+                  ? item.description.substring(0, 100) + '...' 
+                  : item.description}
+              </p>
+              <div className="info-item">
+                <span className="info-icon">📍</span>
+                <span>{item.location}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-icon">📞</span>
+                <span>{item.phoneNumber}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-icon">📅</span>
+                <span>{new Date(item.date).toLocaleDateString()}</span>
+              </div>
+              <button 
+                className="delete-btn" 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  handleDelete(item.id); 
+                }}
+              >
+                🗑️ Delete Item
+              </button>
+            </div>
+          </div>
         ))}
       </div>
-      {items.length === 0 && <p>No found items found.</p>}
+
+      {items.length === 0 && (
+        <div className="empty-state">
+          <p>🎉 No found items reported yet</p>
+          <a href="/add-item" className="btn-primary">📝 Report a Found Item</a>
+        </div>
+      )}
     </div>
   );
 }

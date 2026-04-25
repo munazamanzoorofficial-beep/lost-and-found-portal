@@ -1,46 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllItems } from '../services/api';
+import { getAllItemsAPI } from '../services/api';
 import './Home.css';
 
 function Home() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchItems();
+    loadItems();
   }, []);
 
-  const fetchItems = async () => {
+  const loadItems = async () => {
     setLoading(true);
-    setError(null);
-    try {
-      const data = await getAllItems();
-      setItems(data);
-      if (data.length === 0) {
-        setError('Could not load items from the server. Please refresh the page.');
-      }
-    } catch (error) {
-      console.error('Error fetching items:', error);
-      setError('Unable to load items. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    const data = await getAllItemsAPI();
+    setItems(data);
+    setLoading(false);
   };
 
   const lostCount = items.filter(item => item.status === 'lost').length;
   const foundCount = items.filter(item => item.status === 'found').length;
   const recentItems = items.slice(0, 6);
-
-  const handleCardClick = (id) => {
-    navigate(`/item/${id}`);
-  };
-
-  const handleImageError = (e) => {
-    e.target.src = 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=300';
-  };
 
   if (loading) {
     return (
@@ -53,12 +34,6 @@ function Home() {
 
   return (
     <div className="home">
-      {error && (
-        <div className="error-banner">
-          <p>{error}</p>
-          <button onClick={fetchItems}>Refresh</button>
-        </div>
-      )}
       <div className="hero">
         <div className="hero-content">
           <h1>🔍 Lost Something?</h1>
@@ -97,9 +72,9 @@ function Home() {
 
         <div className="recent-grid">
           {recentItems.map((item) => (
-            <div key={item.id} className="recent-card" onClick={() => handleCardClick(item.id)}>
+            <div key={item.id} className="recent-card" onClick={() => navigate(`/item/${item.id}`)}>
               <div className="recent-image">
-                <img src={item.imageUrl} alt={item.title} onError={handleImageError} />
+                <img src={item.imageUrl} alt={item.title} />
                 <span className={`recent-badge ${item.status}`}>
                   {item.status === 'lost' ? 'LOST' : 'FOUND'}
                 </span>
@@ -119,7 +94,7 @@ function Home() {
         {recentItems.length === 0 && (
           <div className="empty-recent">
             <p>No items reported yet.</p>
-            <a href="/add-item" className="btn-primary">Be the first to report an item</a>
+            <a href="/add-item" className="btn-primary">Be the first to report</a>
           </div>
         )}
       </div>

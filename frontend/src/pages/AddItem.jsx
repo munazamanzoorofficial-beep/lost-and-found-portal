@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createItem } from '../services/api';
+import { createItemAPI } from '../services/api';
 import './AddItem.css';
 
 function AddItem() {
@@ -19,7 +19,6 @@ function AddItem() {
   });
 
   const locations = [
-    'Select Location',
     'Main Cafeteria, Block A',
     'Examination Hall, Block C',
     'Central Library',
@@ -27,37 +26,12 @@ function AddItem() {
     'Computer Science Department',
     'Agriculture Faculty',
     'Student Hostel',
-    'Sports Complex'
+    'Sports Complex',
+    'Administration Block',
+    'Auditorium'
   ];
 
-  const compressImage = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          if (width > 800) {
-            height = (height * 800) / width;
-            width = 800;
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', 0.7));
-        };
-        img.onerror = reject;
-      };
-      reader.onerror = reject;
-    });
-  };
-
-  const handleImageChange = async (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImageError('');
     
@@ -71,13 +45,12 @@ function AddItem() {
         return;
       }
       
-      try {
-        const compressed = await compressImage(file);
-        setImagePreview(compressed);
-        setFormData({ ...formData, imageUrl: compressed });
-      } catch (error) {
-        setImageError('Error processing image');
-      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        setFormData({ ...formData, imageUrl: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -91,7 +64,7 @@ function AddItem() {
     
     setSubmitting(true);
     try {
-      await createItem(formData);
+      await createItemAPI(formData);
       alert('✅ Item reported successfully!');
       navigate(formData.status === 'lost' ? '/lost' : '/found');
     } catch (error) {
@@ -135,9 +108,10 @@ function AddItem() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Location *</label>
+            <label className="form-label">Campus Location *</label>
             <select required className="form-select" value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})}>
-              {locations.map((loc, i) => <option key={i} value={i === 0 ? '' : loc} disabled={i === 0}>{loc}</option>)}
+              <option value="">Select Location</option>
+              {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
             </select>
           </div>
 

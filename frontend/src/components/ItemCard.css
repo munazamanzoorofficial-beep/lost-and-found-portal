@@ -1,35 +1,43 @@
 .item-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s;
-  margin: 10px;
+  transition: all 0.3s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .item-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .card-image {
   position: relative;
-  height: 180px;
+  height: 200px;
   overflow: hidden;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
 .card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.item-card:hover .card-image img {
+  transform: scale(1.05);
 }
 
 .status-badge {
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 4px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
@@ -46,38 +54,59 @@
 
 .card-content {
   padding: 15px;
+  flex: 1;
 }
 
 .card-content h3 {
-  margin: 0 0 8px 0;
   font-size: 18px;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .description {
   color: #666;
   font-size: 13px;
-  margin-bottom: 10px;
   line-height: 1.4;
+  margin-bottom: 12px;
 }
 
 .info-item {
   font-size: 12px;
-  color: #666;
-  margin: 5px 0;
+  color: #888;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .delete-btn {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 8px;
   background: #ff4757;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.3s;
 }
 
 .delete-btn:hover {
   background: #e84118;
+}
+
+@media (max-width: 768px) {
+  .card-image {
+    height: 180px;
+  }
+  
+  .card-content h3 {
+    font-size: 16px;
+  }
+  
+  .description {
+    font-size: 12px;
+  }
 }
