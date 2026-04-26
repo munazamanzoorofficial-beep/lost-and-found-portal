@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getAllItemsAPI } from '../services/api';
 import './Home.css';
 
@@ -40,8 +40,8 @@ function Home() {
           <h2>We'll Help You Find It.</h2>
           <p>The official Lost & Found portal for PMAS-Arid Agriculture University</p>
           <div className="hero-buttons">
-            <a href="/add-item" className="btn-primary">+ Report an Item</a>
-            <a href="/lost" className="btn-secondary">Browse Lost Items →</a>
+            <Link to="/add-item" className="btn-primary">+ Report an Item</Link>
+            <Link to="/lost" className="btn-secondary">Browse Lost Items →</Link>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@ function Home() {
         {recentItems.length === 0 && (
           <div className="empty-recent">
             <p>No items reported yet.</p>
-            <a href="/add-item" className="btn-primary">Be the first to report</a>
+            <Link to="/add-item" className="btn-primary">Be the first to report</Link>
           </div>
         )}
       </div>
@@ -103,7 +103,7 @@ function Home() {
         <div className="cta-content">
           <h2>Lost or Found Something?</h2>
           <p>Report it now and help reunite people with their belongings</p>
-          <a href="/add-item" className="cta-button">Report an Item Now →</a>
+          <Link to="/add-item" className="cta-button">Report an Item Now →</Link>
         </div>
       </div>
     </div>
